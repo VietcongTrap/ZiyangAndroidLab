@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Ziyang\'s Android Labs</string>
+    <string name="Welcome">Hello World!</string>
 </resources>
