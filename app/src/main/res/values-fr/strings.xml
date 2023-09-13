@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Lab android de Ziyang</string>
+    <string name="Welcome">Bonjour tout le monde!</string>
+    <string name="button_message">Je suis un button</string>
+</resources>
