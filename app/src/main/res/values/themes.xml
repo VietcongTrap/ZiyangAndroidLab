@@ -3,10 +3,10 @@
     <style name="Theme.ZiyangAndroidLabs" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
-        <item name="colorPrimary">@color/my_primary</item>
+        <item name="colorPrimary">#2E8C30</item>
         <item name="colorSecondary">@color/my_secondary</item>
         <item name="android:statusBarColor">@color/my_secondary</item>
-        <item name="android:textColor">@color/text</item>
+        <item name="android:textColor">#A1887F</item>
     </style>
 
 
