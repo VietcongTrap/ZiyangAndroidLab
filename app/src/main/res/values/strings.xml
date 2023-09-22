@@ -2,5 +2,7 @@
     <string name="app_name">Ziyang\'s Android Labs</string>
     <string name="Welcome">Hello World!</string>
     <string name="button_message">I am a button</string>
-    <string name="editMessage">I\'m an edit text</string>
+    <string name="compound_button_message">Do you drink coffee?</string>
+    <string name="editMessage">I am an edit text</string>
+    <string name="hint">Write something here</string>
 </resources>
