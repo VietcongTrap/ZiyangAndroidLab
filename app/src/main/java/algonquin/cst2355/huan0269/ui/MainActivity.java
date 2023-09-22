@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -37,6 +38,11 @@ public class MainActivity extends AppCompatActivity {
         RadioButton rbt = binding.myRadioButton;
         Switch sw = binding.mySwitch;
         CheckBox cb = binding.myCheckBox;
+        ImageButton ib = binding.myImageButton;
+
+        ib.setOnClickListener(clck->{
+            mytext.setText("You clicked the image!");
+        });
 
         // monitor the changes on the three compound buttons
         rbt.setOnCheckedChangeListener((buttonView, b) -> {
@@ -58,12 +64,12 @@ public class MainActivity extends AppCompatActivity {
 
         //When viewModel gets its value changed this will change mytext
         viewModel.userString.observe(this, s -> {
-            mytext.setText("Your edit text has"+ s );
+            mytext.setText("Your edit text has "+ s );
         } );
         //OnClickListener
         btn.setOnClickListener(v -> {
             String editString = et.getText().toString(); //read what the user typed
-            viewModel.userString.postValue("Your edit text has"+editString); //set the value, and notify observers
+            viewModel.userString.postValue(editString); //set the value, and notify observers
             btn.setText("You clicked the button");
         });
     }
