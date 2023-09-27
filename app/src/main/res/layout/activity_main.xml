@@ -49,4 +49,23 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
+    <ImageView
+        android:id="@+id/flagView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        app:layout_constraintStart_toStartOf="@+id/myButton"
+        app:layout_constraintTop_toBottomOf="@+id/myButton"
+        app:srcCompat="@drawable/flag" />
+
+    <Switch
+        android:id="@+id/spin_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:text="@string/spin_message"
+        app:layout_constraintBottom_toBottomOf="@+id/flagView"
+        app:layout_constraintStart_toEndOf="@+id/flagView"
+        app:layout_constraintTop_toTopOf="@+id/flagView" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

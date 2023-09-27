@@ -4,4 +4,5 @@
     <string name="Welcome">Bonjour tout le monde!</string>
     <string name="button_message">Je suis un button</string>
     <string name="editMessage">Je suis un text</string>
+    <string name="spin_message">tourner le drapeau</string>
 </resources>

@@ -5,4 +5,5 @@
     <string name="compound_button_message">Do you drink coffee?</string>
     <string name="editMessage">I am an edit text</string>
     <string name="hint">Write something here</string>
+    <string name="spin_message">Spin flag</string>
 </resources>
