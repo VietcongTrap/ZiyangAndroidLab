@@ -4,7 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.MainActivity">
+    tools:context=".ui.MainActivity"
+    android:layout_marginTop="27dp"
+    android:layout_marginBottom="27dp"
+    android:layout_marginLeft="48dp"
+    android:layout_marginRight="48dp">
     <!-- empty comment -->
 
     <Button
@@ -12,7 +16,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:text="Button"
+        android:text="Button3"
+
+        android:nextFocusLeft="@id/myButton2"
+        android:nextFocusRight="@id/myButton"
+        android:nextFocusDown="@id/spin_switch"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -22,10 +30,14 @@
 
     <Button
         android:id="@+id/myButton2"
+        android:nextFocusDown="@id/spin_switch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:text="Button"
+        android:text="Button2"
+
+        android:nextFocusLeft="@id/myButton"
+        android:nextFocusRight="@id/myButton3"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/myButton3"
@@ -40,7 +52,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
-        android:text="Button"
+        android:text="Button1"
+        android:nextFocusLeft="@id/myButton3"
+        android:nextFocusRight="@id/myButton2"
+        android:nextFocusDown="@id/spin_switch"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/myButton2"
@@ -54,6 +69,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
+        android:nextFocusUp="@id/myButton"
         app:layout_constraintStart_toStartOf="@+id/myButton"
         app:layout_constraintTop_toBottomOf="@+id/myButton"
         app:srcCompat="@drawable/flag" />
@@ -63,6 +79,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
+        android:minHeight="48dp"
         android:text="@string/spin_message"
         app:layout_constraintBottom_toBottomOf="@+id/flagView"
         app:layout_constraintStart_toEndOf="@+id/flagView"
