@@ -12,6 +12,7 @@ import android.widget.RadioButton;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import algonquin.cst2355.huan0269.data.MainViewModel;
 import algonquin.cst2355.huan0269.databinding.ActivityMainBinding;
@@ -42,24 +43,37 @@ public class MainActivity extends AppCompatActivity {
 
         ib.setOnClickListener(clck->{
             mytext.setText("You clicked the image!");
+            int width = ib.getWidth();
+            int height = ib.getHeight();
+            CharSequence switchToast = "The width = " + width + " and height = " + height ;
+            int duration = Toast.LENGTH_SHORT;
+
+            Toast toast = Toast.makeText(this /* MyActivity */, switchToast, duration);
+            toast.show();
         });
 
         // monitor the changes on the three compound buttons
-        rbt.setOnCheckedChangeListener((buttonView, b) -> {
-            viewModel.onOrOff.postValue(b);
+        rbt.setOnCheckedChangeListener((buttonView, onOrOff) -> {
+            viewModel.onOrOff.postValue(onOrOff);
         });
-        sw.setOnCheckedChangeListener((buttonView, b) -> {
-            viewModel.onOrOff.postValue(b);
+        sw.setOnCheckedChangeListener((buttonView, onOrOff) -> {
+            viewModel.onOrOff.postValue(onOrOff);
         });
-        cb.setOnCheckedChangeListener((buttonView, b) -> {
-            viewModel.onOrOff.postValue(b);
+        cb.setOnCheckedChangeListener((buttonView, onOrOff) -> {
+            viewModel.onOrOff.postValue(onOrOff);
         });
         // set the changes
-        viewModel.onOrOff.observe(this,newBool->{
-            cb.setChecked(newBool);
-            sw.setChecked(newBool);
-            rbt.setChecked(newBool);
+        viewModel.onOrOff.observe(this,onOrOff->{
+            cb.setChecked(onOrOff);
+            sw.setChecked(onOrOff);
+            rbt.setChecked(onOrOff);
+            CharSequence switchToast = "The value is!"+ onOrOff;
+            int duration = Toast.LENGTH_SHORT;
+
+            Toast toast = Toast.makeText(this /* MyActivity */, switchToast, duration);
+            toast.show();
         });
+
 
 
         //When viewModel gets its value changed this will change mytext
