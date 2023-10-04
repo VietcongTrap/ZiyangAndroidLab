@@ -35,22 +35,22 @@
         android:id="@+id/myCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="80dp"
+        android:layout_marginBottom="164dp"
         android:text="@string/compound_button_message"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.065"
+        app:layout_constraintHorizontal_bias="0.248"
         app:layout_constraintStart_toStartOf="parent" />
 
     <RadioButton
         android:id="@+id/myRadioButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="40dp"
-        android:text="I am a radio button"
+        android:layout_marginBottom="88dp"
+        android:text="@string/i_am_a_radio_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.042"
+        app:layout_constraintHorizontal_bias="0.257"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Switch
@@ -58,10 +58,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:text="I am a switch"
+        android:minHeight="48dp"
+        android:text="@string/i_am_a_switch"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.056"
+        app:layout_constraintHorizontal_bias="0.277"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
@@ -69,36 +70,38 @@
         android:id="@+id/myEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="136dp"
+        android:layout_marginBottom="240dp"
         android:hint="@string/hint"
         android:text="@string/editMessage"
-        android:textSize="40dp"
+        android:textSize="40sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.478"
+        app:layout_constraintHorizontal_bias="0.462"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
         android:id="@+id/myImageView"
         android:layout_width="249dp"
         android:layout_height="125dp"
-        android:layout_marginBottom="452dp"
+        android:layout_marginBottom="448dp"
         android:src="@drawable/logo_algonquin"
         android:text="@string/editMessage"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.414"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.207"
+        app:layout_constraintStart_toStartOf="parent"
+        android:contentDescription="@string/algonquin" />
 
     <ImageButton
         android:id="@+id/myImageButton"
         android:layout_width="228dp"
         android:layout_height="128dp"
-        android:layout_marginBottom="268dp"
+        android:layout_marginBottom="448dp"
         android:src="@drawable/logo_algonquin"
         android:text="@string/editMessage"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.701"
+        app:layout_constraintStart_toStartOf="parent"
+        android:contentDescription="@string/algonquin" />
 </androidx.constraintlayout.widget.ConstraintLayout>

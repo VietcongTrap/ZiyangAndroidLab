@@ -3,5 +3,10 @@
     <string name="app_name">Lab android de Ziyang</string>
     <string name="Welcome">Bonjour tout le monde!</string>
     <string name="button_message">Je suis un button</string>
+    <string name="compound_button_message">bois tu coffee?</string>
     <string name="editMessage">Je suis un text</string>
+    <string name="hint">hint</string>
+    <string name="i_am_a_radio_button">je suis un button</string>
+    <string name="i_am_a_switch">je suis un switch</string>
+    <string name="algonquin">algonquin</string>
 </resources>

@@ -3,5 +3,10 @@
     <string name="app_name">子扬的安卓课业</string>
     <string name="Welcome">你好</string>
     <string name="button_message">我是按钮</string>
+    <string name="compound_button_message">你喝咖啡吗</string>
     <string name="editMessage">我是编辑文本</string>
+    <string name="hint">提示</string>
+    <string name="i_am_a_radio_button">我是按钮</string>
+    <string name="i_am_a_switch">我是开关</string>
+    <string name="algonquin">阿岗昆</string>
 </resources>

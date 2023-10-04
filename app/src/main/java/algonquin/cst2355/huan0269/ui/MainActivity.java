@@ -45,10 +45,10 @@ public class MainActivity extends AppCompatActivity {
             mytext.setText("You clicked the image!");
             int width = ib.getWidth();
             int height = ib.getHeight();
-            CharSequence switchToast = "The width = " + width + " and height = " + height ;
+            CharSequence imgToast = "The width = " + width + " and height = " + height ;
             int duration = Toast.LENGTH_SHORT;
 
-            Toast toast = Toast.makeText(this /* MyActivity */, switchToast, duration);
+            Toast toast = Toast.makeText(this /* MyActivity */, imgToast, duration);
             toast.show();
         });
 

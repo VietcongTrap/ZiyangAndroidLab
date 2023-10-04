@@ -5,4 +5,7 @@
     <string name="compound_button_message">Do you drink coffee?</string>
     <string name="editMessage">I am an edit text</string>
     <string name="hint">Write something here</string>
+    <string name="i_am_a_radio_button">I am a radio button</string>
+    <string name="i_am_a_switch">I am a switch</string>
+    <string name="algonquin">Algonquin</string>
 </resources>
