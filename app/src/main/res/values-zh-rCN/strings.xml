@@ -9,4 +9,5 @@
     <string name="i_am_a_radio_button">我是按钮</string>
     <string name="i_am_a_switch">我是开关</string>
     <string name="algonquin">阿岗昆</string>
+    <string name="passw_text">输入密码</string>
 </resources>

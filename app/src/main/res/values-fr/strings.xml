@@ -9,4 +9,5 @@
     <string name="i_am_a_radio_button">je suis un button</string>
     <string name="i_am_a_switch">je suis un switch</string>
     <string name="algonquin">algonquin</string>
+    <string name="passw_text">tapez votre mot de passe</string>
 </resources>
