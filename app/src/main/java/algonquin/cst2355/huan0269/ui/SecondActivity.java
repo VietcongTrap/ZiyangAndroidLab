@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -56,15 +57,21 @@ public class SecondActivity extends AppCompatActivity {
         File file = new File( getFilesDir(), "Picture.png");
         if(file.exists())
         {
-            Bitmap theImage = BitmapFactory.decodeFile("Picture.png");
+            Bitmap theImage = BitmapFactory.decodeFile("/data/data/algonquin.cst2355.huan0269/files/Picture.png");
             profileImage.setImageBitmap(theImage);
         }
-
+        SharedPreferences prefs = getSharedPreferences("MyData", Context.MODE_PRIVATE);
+        String telephoneNum = prefs.getString("Telenum","");
+        SharedPreferences.Editor editor2 = prefs.edit();
+        et.setText(telephoneNum);
         //OnClickListener
         callbtn.setOnClickListener(v -> {
             String phoneNumber   = et.getText().toString(); //read what the user typed
             Intent call = new Intent(Intent.ACTION_DIAL);
             call.setData(Uri.parse("tel:" + phoneNumber));
+            editor2.putString("Telenum", et.getText().toString());
+            editor2.apply();
+
             startActivity(call);
         });
         ActivityResultLauncher<Intent> cameraResult = registerForActivityResult(

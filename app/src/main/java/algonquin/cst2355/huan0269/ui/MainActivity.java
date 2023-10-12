@@ -41,16 +41,15 @@ public class MainActivity extends AppCompatActivity {
         Button btn = binding.myButton; //must not be null
         EditText et = binding.myEditText;
 
-        String LoginName = "";
         SharedPreferences prefs = getSharedPreferences("MyData", Context.MODE_PRIVATE);
-        String emailAddress = prefs.getString(LoginName,"");
+        String emailAddress = prefs.getString("LoginName","");
         SharedPreferences.Editor editor = prefs.edit();
         et.setText(emailAddress);
         //OnClickListener
         btn.setOnClickListener(v -> {
             Log.i(TAG,"click the button");
             Intent nextPage = new Intent(MainActivity.this,SecondActivity.class);
-            editor.putString(LoginName, et.getText().toString());
+            editor.putString("LoginName", et.getText().toString());
             editor.apply();
 
             nextPage.putExtra("EmailAddress",et.getText().toString());
