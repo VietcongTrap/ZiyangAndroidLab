@@ -1,5 +1,7 @@
 package algonquin.cst2355.huan0269.ui;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -16,6 +18,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -64,34 +67,34 @@ public class SecondActivity extends AppCompatActivity {
             call.setData(Uri.parse("tel:" + phoneNumber));
             startActivity(call);
         });
-        cambtn.setOnClickListener(v -> {
-            Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            ActivityResultLauncher<Intent> cameraResult = registerForActivityResult(
-                    new ActivityResultContracts.StartActivityForResult(),
-                    new ActivityResultCallback<ActivityResult>() {
-                        @Override
-                        public void onActivityResult(ActivityResult result) {
-                            if (result.getResultCode() == Activity.RESULT_OK) {
-                                Intent data = result.getData();
-                                Bitmap thumbnail = data.getParcelableExtra("data");
-                                profileImage.setImageBitmap(thumbnail);
-
-                                FileOutputStream fOut = null;
-
-                                try { fOut = openFileOutput("Picture.png", Context.MODE_PRIVATE);
-                                    Bitmap mBitmap = null;
-                                    mBitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut);
-                                    fOut.flush();
-                                    fOut.close();
-                                }
-                                catch (IOException e)
-                                    { e.printStackTrace();
-                                }
-
-
-                            }
+        ActivityResultLauncher<Intent> cameraResult = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (result.getResultCode() == Activity.RESULT_OK) {
+                            Intent data = result.getData();
+                            Bitmap thumbnail = data.getParcelableExtra("data");
+                            profileImage.setImageBitmap(thumbnail);
                         }
-                    });
+                    }
+                });
+        cambtn.setOnClickListener(v -> {
+            Log.i(TAG,"Cam button clicked");
+            Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            /*
+            FileOutputStream fOut = null;
+            try { fOut = openFileOutput("Picture.png", Context.MODE_PRIVATE);
+                Bitmap mBitmap;
+                mBitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut);
+                fOut.flush();
+                fOut.close();
+            }
+            catch (IOException e)
+            { e.printStackTrace();
+            }
+
+             */
             cameraResult.launch(cameraIntent);
         });
     }
