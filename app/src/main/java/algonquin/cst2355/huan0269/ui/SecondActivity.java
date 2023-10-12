@@ -76,25 +76,22 @@ public class SecondActivity extends AppCompatActivity {
                             Intent data = result.getData();
                             Bitmap thumbnail = data.getParcelableExtra("data");
                             profileImage.setImageBitmap(thumbnail);
+                            FileOutputStream fOut = null;
+
+                            try { fOut = openFileOutput("Picture.png", Context.MODE_PRIVATE);
+                                thumbnail.compress(Bitmap.CompressFormat.PNG, 100, fOut);
+                                fOut.flush();
+                                fOut.close();
+                            }
+                            catch (IOException e)
+                            { e.printStackTrace();
+                            }
                         }
                     }
                 });
         cambtn.setOnClickListener(v -> {
             Log.i(TAG,"Cam button clicked");
             Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            /*
-            FileOutputStream fOut = null;
-            try { fOut = openFileOutput("Picture.png", Context.MODE_PRIVATE);
-                Bitmap mBitmap;
-                mBitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut);
-                fOut.flush();
-                fOut.close();
-            }
-            catch (IOException e)
-            { e.printStackTrace();
-            }
-
-             */
             cameraResult.launch(cameraIntent);
         });
     }
