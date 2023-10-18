@@ -1,10 +1,10 @@
 <resources>
     <string name="app_name">Ziyang\'s Android Labs</string>
-    <string name="Welcome">Hello World!</string>
-    <string name="button_message">I am a button</string>
+    <string name="Welcome">Type your password</string>
+    <string name="button_message">LOGIN</string>
     <string name="compound_button_message">Do you drink coffee?</string>
-    <string name="editMessage">I am an edit text</string>
-    <string name="hint">Write something here</string>
+    <string name="editMessage">password here</string>
+    <string name="hint">enter password here</string>
     <string name="i_am_a_radio_button">I am a radio button</string>
     <string name="i_am_a_switch">I am a switch</string>
     <string name="algonquin">Algonquin</string>
