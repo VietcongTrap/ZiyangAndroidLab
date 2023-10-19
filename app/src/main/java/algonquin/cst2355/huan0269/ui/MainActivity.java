@@ -14,77 +14,114 @@ import android.widget.TextView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import algonquin.cst2355.huan0269.R;
 import algonquin.cst2355.huan0269.data.MainViewModel;
 import algonquin.cst2355.huan0269.databinding.ActivityMainBinding;
 
+/**
+ * This is the main activity handling the main page of the app.
+ * It allows user to enter password and check its validity.
+ * @author Ziyang Huang
+ * @version 1.0
+ */
 public class MainActivity extends AppCompatActivity {
-    private ActivityMainBinding binding;
-    private MainViewModel viewModel;
-
+    /**
+     * This is the text on the center of the screen
+     */
+    private TextView tv = null;
+    /**
+     * This allows user to enter the password.
+     */
+    private EditText et = null;
+    /**
+     * This button when clicked will activate the validity checking function
+     */
+    private  Button btn = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        tv = findViewById(R.id.myTextView);
+        et = findViewById(R.id.myEditText);
+       btn = findViewById(R.id.myButton);
 
-        viewModel = new ViewModelProvider(this).get(MainViewModel.class);
-        //this is the only function call, loads stuff onto screen
-        setContentView(binding.getRoot());
-
-
-        TextView mytext = binding.myTextView; //same as getElementById() in HTML
-        Button btn = binding.myButton; //must not be null
-        EditText et = binding.myEditText;
-        ImageView mv = binding.myImageView;
-        RadioButton rbt = binding.myRadioButton;
-        Switch sw = binding.mySwitch;
-        CheckBox cb = binding.myCheckBox;
-        ImageButton ib = binding.myImageButton;
-
-        ib.setOnClickListener(clck->{
-            mytext.setText("You clicked the image!");
-            int width = ib.getWidth();
-            int height = ib.getHeight();
-            CharSequence imgToast = "The width = " + width + " and height = " + height ;
-            int duration = Toast.LENGTH_SHORT;
-
-            Toast toast = Toast.makeText(this /* MyActivity */, imgToast, duration);
-            toast.show();
+        btn.setOnClickListener( clk -> {
+            String password = et.getText().toString();
+            checkPasswordValidity (password);
+            if ( checkPasswordValidity (password) ){
+                tv.setText("Your pass word meets the requirements");
+            } else {
+                tv.setText("You Shall NOT Pass");
+            }
         });
 
-        // monitor the changes on the three compound buttons
-        rbt.setOnCheckedChangeListener((buttonView, onOrOff) -> {
-            viewModel.onOrOff.postValue(onOrOff);
-        });
-        sw.setOnCheckedChangeListener((buttonView, onOrOff) -> {
-            viewModel.onOrOff.postValue(onOrOff);
-        });
-        cb.setOnCheckedChangeListener((buttonView, onOrOff) -> {
-            viewModel.onOrOff.postValue(onOrOff);
-        });
-        // set the changes
-        viewModel.onOrOff.observe(this,onOrOff->{
-            cb.setChecked(onOrOff);
-            sw.setChecked(onOrOff);
-            rbt.setChecked(onOrOff);
-            CharSequence switchToast = "The value is!"+ onOrOff;
-            int duration = Toast.LENGTH_SHORT;
+    }
 
-            Toast toast = Toast.makeText(this /* MyActivity */, switchToast, duration);
-            toast.show();
-        });
+    /**
+     * The method is used to check if a password has an uppercase, a lowercase
+     * a digit and a special character.
+     * @param pw the password String that is going to be checked
+     * @return Return true if valid, false if invalid
+     */
+    boolean checkPasswordValidity (String pw){
+        boolean foundUppercase = false;
+        boolean foundLowercase = false;
+        boolean foundNum = false;
+        boolean foundSpecial = false;
+        for (int i = 0; i<pw.length(); i++){
+           char thisChar = pw.charAt(i);
+           if ( Character.isUpperCase(thisChar)){
+               foundUppercase = true;
+           }
+            if ( Character.isLowerCase(thisChar)){
+                foundLowercase = true;
+            }
+            if ( Character.isDigit(thisChar)){
+                foundNum = true;
+            }
+            if ( isSpecialCharacter(thisChar)){
+                foundSpecial = true;
+            }
+        }
+        if(!foundUppercase) {
+            Toast.makeText(this,"upper case letter missing",Toast.LENGTH_SHORT).show(); ;// Say that they are missing an upper case letter;
+            return false;
+        } else if(!foundLowercase) {
+            Toast.makeText(this,"lower case letter missing",Toast.LENGTH_SHORT).show(); ;// Say that they are missing an upper case letter;
+            return false;
+        }
+        else if( !foundNum)  {
+            Toast.makeText(this,"number missing",Toast.LENGTH_SHORT).show(); ;// Say that they are missing an upper case letter;
+            return false;
+        }
+        else if(!foundSpecial)    {
+            Toast.makeText(this,"special character missing",Toast.LENGTH_SHORT).show(); ;// Say that they are missing an upper case letter;
+            return false;
+        }
+        else
+            return true; //only get here if they're all true
+    }
 
-
-
-        //When viewModel gets its value changed this will change mytext
-        viewModel.userString.observe(this, s -> {
-            mytext.setText("Your edit text has "+ s );
-        } );
-        //OnClickListener
-        btn.setOnClickListener(v -> {
-            String editString = et.getText().toString(); //read what the user typed
-            viewModel.userString.postValue(editString); //set the value, and notify observers
-            btn.setText("You clicked the button");
-        });
+    /**
+     * This method is made to check if there is a special character.
+     * @param c the input character to be checked if it is a special character
+     * @return true if special character, false if not
+     */
+    boolean isSpecialCharacter(char c){
+        switch (c){
+            case '#':
+            case '$':
+            case '%':
+            case '^':
+            case '&':
+            case '*':
+            case '!':
+            case '@':
+            case '?':
+                return true;
+            default:
+                return false;
+        }
     }
 }
