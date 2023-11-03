@@ -1,21 +1,16 @@
 package algonquin.cst2355.huan0269.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.RadioButton;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import algonquin.cst2355.huan0269.R;
-import algonquin.cst2355.huan0269.data.MainViewModel;
 import algonquin.cst2355.huan0269.databinding.ActivityMainBinding;
 
 /**
