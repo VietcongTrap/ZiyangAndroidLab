@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
 import android.os.Bundle;
 import android.view.View;
@@ -14,10 +15,14 @@ import android.widget.TextView;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import algonquin.cst2355.huan0269.R;
 import algonquin.cst2355.huan0269.data.ChatMessage;
+import algonquin.cst2355.huan0269.data.ChatMessageDAO;
 import algonquin.cst2355.huan0269.data.ChatRoomViewModel;
+import algonquin.cst2355.huan0269.data.MessageDatabase;
 import algonquin.cst2355.huan0269.databinding.ActivityChatRoomBinding;
 import algonquin.cst2355.huan0269.databinding.ReceiveMessageBinding;
 import algonquin.cst2355.huan0269.databinding.SentMessageBinding;
@@ -34,6 +39,10 @@ public class ChatRoom extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityChatRoomBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        MessageDatabase db = Room.databaseBuilder(getApplicationContext(), MessageDatabase.class, "database-name").build();
+        ChatMessageDAO mDAO = db.cmDAO();
+
 
         // get the data from view model
         ChatRoomViewModel chatModel = new ViewModelProvider(this).get(ChatRoomViewModel.class);
@@ -64,54 +73,63 @@ public class ChatRoom extends AppCompatActivity {
             binding.textInput.setText("");
         });
 
+        if(messages == null)
+        {
+            chatModel.messages.setValue(messages = new ArrayList<>());
 
-        //Initialize the adapter
-        binding.myRecyclerView.setAdapter(myAdapter = new RecyclerView.Adapter<MyRowHolder>() {
-                    @NonNull
-                    @Override
-                    // populate the row
-                    public MyRowHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                        if (viewType == 0) {
-                            SentMessageBinding newBinding = SentMessageBinding.inflate(getLayoutInflater(), parent, false);
-                            return new MyRowHolder(newBinding.getRoot());
-                        } else {
-                            ReceiveMessageBinding newBinding = ReceiveMessageBinding.inflate(getLayoutInflater(), parent, false);
-                            return new MyRowHolder(newBinding.getRoot());
-                        }
-                    }
+            Executor thread = Executors.newSingleThreadExecutor();
+            thread.execute(() ->
+            {
+                messages.addAll( mDAO.getAllMessages() ); //Once you get the data from database
+                runOnUiThread( () ->
+                        //Initialize the adapter
+                        binding.myRecyclerView.setAdapter(myAdapter = new RecyclerView.Adapter<MyRowHolder>() {
+                                    @NonNull
+                                    @Override
+                                    // populate the row
+                                    public MyRowHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                                        if (viewType == 0) {
+                                            SentMessageBinding newBinding = SentMessageBinding.inflate(getLayoutInflater(), parent, false);
+                                            return new MyRowHolder(newBinding.getRoot());
+                                        } else {
+                                            ReceiveMessageBinding newBinding = ReceiveMessageBinding.inflate(getLayoutInflater(), parent, false);
+                                            return new MyRowHolder(newBinding.getRoot());
+                                        }
+                                    }
 
-                    @Override
-                    // replace the default text
-                    public void onBindViewHolder(@NonNull MyRowHolder holder, int position) {
-                        holder.messageText.setText(""+position);
-                        holder.timeText.setText(""+position);
+                                    @Override
+                                    // replace the default text
+                                    public void onBindViewHolder(@NonNull MyRowHolder holder, int position) {
+                                        holder.messageText.setText(""+position);
+                                        holder.timeText.setText(""+position);
 
-                        holder.messageText.setText(messages.get(position).getMessage());
-                        holder.timeText.setText(messages.get(position).getTimeSent());
+                                        holder.messageText.setText(messages.get(position).getMessage());
+                                        holder.timeText.setText(messages.get(position).getTimeSent());
 
-                    }
+                                    }
 
-                    public int getItemViewType(int position){
-                        // 1 if receive, 0 if send
+                                    public int getItemViewType(int position){
+                                        // 1 if receive, 0 if send
 
-                        if (messages.get(position).getIsSent()){
-                            return 0;
-                        } else {
-                            return 1;
-                        }
+                                        if (messages.get(position).getIsSent()){
+                                            return 0;
+                                        } else {
+                                            return 1;
+                                        }
 
 
-                    }
-                    @Override
-                    public int getItemCount() {
-                        return messages.size();
-                    }
-                }
-
-        );
-        // Allow scrolling
-        binding.myRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-
+                                    }
+                                    @Override
+                                    public int getItemCount() {
+                                        return messages.size();
+                                    }
+                                }
+                        )
+                );
+                // Allow scrolling
+                binding.myRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+            });
+        }
     }
     // This represents a single row in the recycler
     class MyRowHolder extends RecyclerView.ViewHolder {
@@ -119,6 +137,9 @@ public class ChatRoom extends AppCompatActivity {
         TextView timeText;
         public MyRowHolder(@NonNull View itemView) {
             super(itemView);
+            itemView.setOnClickListener(clk -> {
+                int position =  getAdapterPosition();
+            });
             messageText = itemView.findViewById(R.id.messageText);
             timeText = itemView.findViewById(R.id.timeText);
         }
