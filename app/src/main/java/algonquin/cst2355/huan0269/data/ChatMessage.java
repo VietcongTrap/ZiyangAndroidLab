@@ -15,6 +15,7 @@ public class ChatMessage {
     String timeSent;
     @ColumnInfo(name="isSent")
     boolean isSentButton;
+    // without an empty constructor it won't work
     public ChatMessage(){};
 
     public ChatMessage(String m, String t, boolean sent)
