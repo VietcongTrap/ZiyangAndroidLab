@@ -171,6 +171,13 @@ public class ChatRoom extends AppCompatActivity {
                     Snackbar.make(messageText,"You deleted message" + position, Snackbar.LENGTH_SHORT).setAction("undo", click -> {
                         messages.add(position,m);
                         myAdapter.notifyItemInserted(position);
+                        Executor thread6 = Executors.newSingleThreadExecutor();
+                        thread6.execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                mDAO.insertMessage(m);
+                            }
+                        });
                     }).show();
                 });
                 builder.create().show();
