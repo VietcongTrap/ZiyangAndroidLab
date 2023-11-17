@@ -24,7 +24,8 @@ public class MessageDetailsFragment extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
         DetailsLayoutBinding binding = DetailsLayoutBinding.inflate(inflater);
         binding.messageDetail.setText(selected.getMessage());
-        binding.databaseId.setText(selected.id);
+
+        binding.databaseId.setText("id= " + selected.getId());
         binding.timeDetail.setText(selected.getTimeSent());
         if (selected.getIsSent()){
             binding.sendReceive.setText("Sent");

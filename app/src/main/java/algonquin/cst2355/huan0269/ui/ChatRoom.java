@@ -83,32 +83,37 @@ public class ChatRoom extends AppCompatActivity {
             SimpleDateFormat sdf = new SimpleDateFormat("EEEE, dd-MMM-yyyy hh-mm-ss a");
             String currentDateandTime = sdf.format(new Date());
             ChatMessage chatMessage = new ChatMessage(binding.textInput.getText().toString(),currentDateandTime,true);
-            messages.add((chatMessage));
             // add to database
             Executor thread3 = Executors.newSingleThreadExecutor();
-            thread.execute(new Runnable() {
+            thread3.execute(new Runnable() {
                 @Override
                 public void run() {
                     mDAO.insertMessage(chatMessage);
+                    messages.clear();
+                    List<ChatMessage> fromDatabase = mDAO.getAllMessages();
+                    messages.addAll(fromDatabase);
                 }
+
             });
             myAdapter.notifyItemChanged(messages.size()-1);
             //clear the input
             binding.textInput.setText("");
-
         });
         // when click the Receive button
         binding.receiveButton.setOnClickListener(click -> {
             SimpleDateFormat sdf = new SimpleDateFormat("EEEE, dd-MMM-yyyy hh-mm-ss a");
             String currentDateandTime = sdf.format(new Date());
             ChatMessage chatMessage = new ChatMessage(binding.textInput.getText().toString(),currentDateandTime,false);
-            messages.add((chatMessage));
             Executor thread4 = Executors.newSingleThreadExecutor();
-            thread.execute(new Runnable() {
+            thread4.execute(new Runnable() {
                 @Override
                 public void run() {
                     mDAO.insertMessage(chatMessage);
+                    messages.clear();
+                    List<ChatMessage> fromDatabase = mDAO.getAllMessages();
+                    messages.addAll(fromDatabase);
                 }
+
             });
             myAdapter.notifyItemChanged(messages.size()-1);
             //clear the input

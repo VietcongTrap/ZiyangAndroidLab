@@ -1,5 +1,6 @@
 package algonquin.cst2355.huan0269.data;
 
+import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -14,15 +15,13 @@ public class ChatMessage {
     @ColumnInfo(name="timeSent")
     String timeSent;
     @ColumnInfo(name="isSent")
-    boolean isSentButton;
-    // without an empty constructor it won't work
-    public ChatMessage(){};
+    boolean isSent;
 
-    public ChatMessage(String m, String t, boolean sent)
+    public ChatMessage(String message, String timeSent, boolean isSent)
     {
-        message = m;
-        timeSent = t;
-        isSentButton = sent;
+        this.message = message;
+        this.timeSent = timeSent;
+        this.isSent = isSent;
     }
 
     public String getMessage() {
@@ -32,6 +31,7 @@ public class ChatMessage {
         return timeSent;
     }
     public boolean getIsSent(){
-        return isSentButton;
+        return isSent;
     }
+    public int getId(){return id;}
 }

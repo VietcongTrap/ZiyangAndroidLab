@@ -4,7 +4,7 @@ plugins {
 }
 android {
     namespace = "algonquin.cst2355.huan0269"
-    compileSdk = 34
+    compileSdk = 33
 
     buildFeatures{
         viewBinding = true
@@ -13,7 +13,7 @@ android {
     defaultConfig {
         applicationId = "algonquin.cst2355.huan0269"
         minSdk = 22
-        targetSdk = 34
+        targetSdk = 33
         versionCode = 1
         versionName = "1.0"
 
@@ -34,7 +34,7 @@ android {
 
 
 dependencies {
-    val room_version = "2.6.0"
+    val room_version = "2.5.1"
     implementation("androidx.room:room-runtime:$room_version")
     annotationProcessor("androidx.room:room-compiler:$room_version")
     implementation ("androidx.recyclerview:recyclerview:1.1")
