@@ -1,10 +1,7 @@
 package algonquin.cst2355.huan0269.ui;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.google.android.material.snackbar.Snackbar;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -67,15 +63,12 @@ public class ChatRoom extends AppCompatActivity {
         });
         // get everything from db
         Executor thread = Executors.newSingleThreadExecutor();
-        thread.execute(new Runnable() {
-            @Override
-            public void run() {
-                List<ChatMessage> fromDatabase = mDAO.getAllMessages();
-                messages.addAll(fromDatabase);
-            }
+        thread.execute(() -> {
+            List<ChatMessage> fromDatabase = mDAO.getAllMessages();
+            messages.addAll(fromDatabase);
         });
         if (messages == null) {
-            chatModel.messages.postValue(messages = new ArrayList<ChatMessage>());
+            chatModel.messages.postValue(messages = new ArrayList<>());
         }
 
         // when click the Send button
@@ -85,15 +78,11 @@ public class ChatRoom extends AppCompatActivity {
             ChatMessage chatMessage = new ChatMessage(binding.textInput.getText().toString(),currentDateandTime,true);
             // add to database
             Executor thread3 = Executors.newSingleThreadExecutor();
-            thread3.execute(new Runnable() {
-                @Override
-                public void run() {
-                    mDAO.insertMessage(chatMessage);
-                    messages.clear();
-                    List<ChatMessage> fromDatabase = mDAO.getAllMessages();
-                    messages.addAll(fromDatabase);
-                }
-
+            thread3.execute(() -> {
+                mDAO.insertMessage(chatMessage);
+                messages.clear();
+                List<ChatMessage> fromDatabase = mDAO.getAllMessages();
+                messages.addAll(fromDatabase);
             });
             myAdapter.notifyItemChanged(messages.size()-1);
             //clear the input
@@ -105,15 +94,11 @@ public class ChatRoom extends AppCompatActivity {
             String currentDateandTime = sdf.format(new Date());
             ChatMessage chatMessage = new ChatMessage(binding.textInput.getText().toString(),currentDateandTime,false);
             Executor thread4 = Executors.newSingleThreadExecutor();
-            thread4.execute(new Runnable() {
-                @Override
-                public void run() {
-                    mDAO.insertMessage(chatMessage);
-                    messages.clear();
-                    List<ChatMessage> fromDatabase = mDAO.getAllMessages();
-                    messages.addAll(fromDatabase);
-                }
-
+            thread4.execute(() -> {
+                mDAO.insertMessage(chatMessage);
+                messages.clear();
+                List<ChatMessage> fromDatabase = mDAO.getAllMessages();
+                messages.addAll(fromDatabase);
             });
             myAdapter.notifyItemChanged(messages.size()-1);
             //clear the input
@@ -136,9 +121,6 @@ public class ChatRoom extends AppCompatActivity {
             @Override
             // replace the default text
             public void onBindViewHolder(@NonNull MyRowHolder holder, int position) {
-                holder.messageText.setText(""+position);
-                holder.timeText.setText(""+position);
-
                 holder.messageText.setText(messages.get(position).getMessage());
                 holder.timeText.setText(messages.get(position).getTimeSent());
             }
