@@ -4,4 +4,5 @@
     <color name="my_secondary">#573F73</color>
     <color name="statusbar">#1F8DBF</color>
     <color name="text">#3FCCCCFF</color>
+    <color name="white">#00FFFFFF</color>
 </resources>
