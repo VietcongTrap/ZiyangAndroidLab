@@ -70,7 +70,14 @@ public class ChatRoom extends AppCompatActivity {
         if (messages == null) {
             chatModel.messages.postValue(messages = new ArrayList<>());
         }
+        setSupportActionBar(binding.myToolbar);
 
+        @Override
+        public boolean onCreateOptionsMenu(Menu menu) {
+            super.onCreateOptionsMenu(menu);
+            getMenuInflater().inflate(R.menu.myMenu, menu);
+            return true;
+        }
         // when click the Send button
         binding.button.setOnClickListener(click -> {
             SimpleDateFormat sdf = new SimpleDateFormat("EEEE, dd-MMM-yyyy hh-mm-ss a");

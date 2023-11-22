@@ -7,6 +7,8 @@
         <item name="colorSecondary">@color/my_secondary</item>
         <item name="android:statusBarColor">@color/my_secondary</item>
         <item name="android:textColor">#A1887F</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
 
