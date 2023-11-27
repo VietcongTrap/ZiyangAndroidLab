@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.google.android.material.snackbar.Snackbar;
@@ -166,9 +167,9 @@ public class ChatRoom extends AppCompatActivity {
             case R.id.item_1:
                 //put your ChatMessage deletion code here. If you select this item, you should show the alert dialog
                 //asking if the user wants to delete this message.
-
+                ChatMessage m = messages.get(selectedRow);
                 AlertDialog.Builder builder = new AlertDialog.Builder( ChatRoom.this );
-                builder.setMessage("Do you want to delete the message" + messageText.getText());
+                builder.setMessage("Do you want to delete the message" + selectedRow);
                 builder.setTitle("Warning:");
                 builder.setNegativeButton("No",(dialog,cl)->{ });
                 builder.setPositiveButton("Yes",(dialog,cl)->{
@@ -181,7 +182,7 @@ public class ChatRoom extends AppCompatActivity {
                     });
                     messages.remove(selectedRow);
                     myAdapter.notifyItemRemoved(selectedRow);
-                    Snackbar.make(messageText,"You deleted message" + selectedRow, Snackbar.LENGTH_SHORT).setAction("undo", click -> {
+                    Snackbar.make(binding.fragmentLocation,"You deleted message" + selectedRow, Snackbar.LENGTH_SHORT).setAction("undo", click -> {
                         messages.add(selectedRow,m);
                         myAdapter.notifyItemInserted(selectedRow);
                         Executor thread6 = Executors.newSingleThreadExecutor();
@@ -196,6 +197,7 @@ public class ChatRoom extends AppCompatActivity {
                 builder.create().show();
 
             case R.id.item_2:
+                Toast.makeText(this,"Version 1.0, created by Ziyang Hunag", Toast.LENGTH_SHORT).show();
                 break;
         }
 
