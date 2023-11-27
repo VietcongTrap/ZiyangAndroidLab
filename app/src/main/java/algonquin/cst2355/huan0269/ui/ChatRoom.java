@@ -1,6 +1,7 @@
 package algonquin.cst2355.huan0269.ui;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -8,10 +9,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+
+import com.google.android.material.snackbar.Snackbar;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -36,7 +41,8 @@ public class ChatRoom extends AppCompatActivity {
 
     ActivityChatRoomBinding binding;
     private RecyclerView.Adapter myAdapter = null;
-
+    // used to select a row for display and deletion
+    int selectedRow;
     ChatMessageDAO mDAO ;
     ChatRoomViewModel chatModel;
     @Override
@@ -57,7 +63,7 @@ public class ChatRoom extends AppCompatActivity {
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.fragmentLocation,chatFragment)
-                    .addToBackStack("")
+                    .addToBackStack("Tag")
                     .commit();
 
         });
@@ -72,12 +78,6 @@ public class ChatRoom extends AppCompatActivity {
         }
         setSupportActionBar(binding.myToolbar);
 
-        @Override
-        public boolean onCreateOptionsMenu(Menu menu) {
-            super.onCreateOptionsMenu(menu);
-            getMenuInflater().inflate(R.menu.myMenu, menu);
-            return true;
-        }
         // when click the Send button
         binding.button.setOnClickListener(click -> {
             SimpleDateFormat sdf = new SimpleDateFormat("EEEE, dd-MMM-yyyy hh-mm-ss a");
@@ -151,6 +151,57 @@ public class ChatRoom extends AppCompatActivity {
         binding.myRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        //which menu file
+        getMenuInflater().inflate(R.menu.my_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch( item.getItemId() )
+        {
+            case R.id.item_1:
+                //put your ChatMessage deletion code here. If you select this item, you should show the alert dialog
+                //asking if the user wants to delete this message.
+
+                AlertDialog.Builder builder = new AlertDialog.Builder( ChatRoom.this );
+                builder.setMessage("Do you want to delete the message" + messageText.getText());
+                builder.setTitle("Warning:");
+                builder.setNegativeButton("No",(dialog,cl)->{ });
+                builder.setPositiveButton("Yes",(dialog,cl)->{
+                    Executor thread5 = Executors.newSingleThreadExecutor();
+                    thread5.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            mDAO.deleteMessage(m);
+                        }
+                    });
+                    messages.remove(selectedRow);
+                    myAdapter.notifyItemRemoved(selectedRow);
+                    Snackbar.make(messageText,"You deleted message" + selectedRow, Snackbar.LENGTH_SHORT).setAction("undo", click -> {
+                        messages.add(selectedRow,m);
+                        myAdapter.notifyItemInserted(selectedRow);
+                        Executor thread6 = Executors.newSingleThreadExecutor();
+                        thread6.execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                mDAO.insertMessage(m);
+                            }
+                        });
+                    }).show();
+                });
+                builder.create().show();
+
+            case R.id.item_2:
+                break;
+        }
+
+        return true;
+    }
+
     // This represents a single row in the recycler
     class MyRowHolder extends RecyclerView.ViewHolder {
         TextView messageText;
@@ -161,6 +212,7 @@ public class ChatRoom extends AppCompatActivity {
                 int position =  getAdapterPosition();
                 ChatMessage selected = messages.get(position);
                 chatModel.selectedMessage.postValue(selected);
+                selectedRow = position;
                 /*
                 AlertDialog.Builder builder = new AlertDialog.Builder( ChatRoom.this );
                 builder.setMessage("Do you want to delete the message" + messageText.getText());

@@ -3,6 +3,6 @@
     <color name="my_primary">#FFBB86FC</color>
     <color name="my_secondary">#573F73</color>
     <color name="statusbar">#1F8DBF</color>
-    <color name="text">#3F5A5A6E</color>
-    <color name="white">#00FFFFFF</color>
+    <color name="text">#5A5A6E</color>
+    <color name="white">#FFFFFF</color>
 </resources>
