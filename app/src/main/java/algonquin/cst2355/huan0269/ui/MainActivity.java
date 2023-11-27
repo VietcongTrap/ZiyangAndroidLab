@@ -1,21 +1,33 @@
 package algonquin.cst2355.huan0269.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.RadioButton;
-import android.widget.Switch;
-import android.widget.TextView;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import algonquin.cst2355.huan0269.R;
-import algonquin.cst2355.huan0269.data.MainViewModel;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.ImageRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 import algonquin.cst2355.huan0269.databinding.ActivityMainBinding;
 
 /**
@@ -25,38 +37,132 @@ import algonquin.cst2355.huan0269.databinding.ActivityMainBinding;
  * @version 1.0
  */
 public class MainActivity extends AppCompatActivity {
-    /**
-     * This is the text on the center of the screen
-     */
-    private TextView tv = null;
-    /**
-     * This allows user to enter the password.
-     */
+
     private EditText et = null;
-    /**
-     * This button when clicked will activate the validity checking function
-     */
-    private  Button btn = null;
+    protected String cityName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        algonquin.cst2355.huan0269.databinding.ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
+        RequestQueue queue;
+        //This part goes at the top of the onCreate function:
+        queue = Volley.newRequestQueue(this);
+        setContentView(binding.getRoot());
 
-        tv = findViewById(R.id.myTextView);
-        et = findViewById(R.id.myEditText);
-       btn = findViewById(R.id.myButton);
+        TextView tv = binding.myTextView;
+        et = binding.myEditText;
 
-        btn.setOnClickListener( clk -> {
-            String password = et.getText().toString();
-            checkPasswordValidity (password);
-            if ( checkPasswordValidity (password) ){
-                tv.setText("Your pass word meets the requirements");
-            } else {
-                tv.setText("You Shall NOT Pass");
+        Button btn = binding.myButton;
+
+        btn.setOnClickListener(clk -> {
+            try {
+                cityName = URLEncoder.encode(et.getText().toString(), "UTF-8");
+                String url = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=7e943c97096a9784391a981c4d878b22&units=metric";
+                /*
+                {
+  "coord": {
+    "lon": -74.006,
+    "lat": 40.7143
+  },
+  "weather": [
+    {
+      "id": 500,
+      "main": "Rain",
+      "description": "light rain",
+      "icon": "10n"
+    },
+    {
+      "id": 701,
+      "main": "Mist",
+      "description": "mist",
+      "icon": "50n"
+    }
+  ],
+  "base": "stations",
+  "main": {
+    "temp": 11.47,
+    "feels_like": 10.97,
+    "temp_min": 9.23,
+    "temp_max": 12.94,
+    "pressure": 1002,
+    "humidity": 88
+  },
+  "visibility": 4828,
+  "wind": {
+    "speed": 14.31,
+    "deg": 117,
+    "gust": 18.78
+  },
+  "rain": {
+    "1h": 0.16
+  },
+  "clouds": {
+    "all": 100
+  },
+  "dt": 1701057672,
+  "sys": {
+    "type": 2,
+    "id": 2008101,
+    "country": "US",
+    "sunrise": 1700999719,
+    "sunset": 1701034295
+  },
+  "timezone": -18000,
+  "id": 5128581,
+  "name": "New York",
+  "cod": 200
+}
+                 */
+
+                JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
+                        (response) -> {
+                            try {
+                                JSONObject coord = response.getJSONObject("coord");
+                                JSONArray weatherArray = response.getJSONArray("weather");
+
+                                String description;
+                                String iconName = "";
+                                for (int i=0; i<weatherArray.length(); i++){
+                                    JSONObject thisPosition = weatherArray.getJSONObject(i);
+                                    iconName = thisPosition.getString("icon");
+                                    description = thisPosition.getString("description");
+                                }
+                                String imageUrl = "http://openweathermap.org/img/w/" + iconName + ".png";
+                                ImageRequest imgReq = new ImageRequest(imageUrl, new Response.Listener<Bitmap>() {
+                                    @Override
+                                    public void onResponse(Bitmap bitmap) {
+                                        // Do something with loaded bitmap...
+                                        Log.d("image received", "got the image");
+                                        binding.weatherImage.setImageBitmap(bitmap);
+                                    }
+                                }, 1024, 1024, ImageView.ScaleType.CENTER, null,
+                                        (error ) -> {
+                                            Log.d("error", "image not downloaded");
+                                        });
+
+                                queue.add(imgReq);
+                                JSONObject mainObject = response.getJSONObject( "main" );
+                                int vis = response.getInt("visibility");
+                                String name = response.getString("name");
+                                double current = mainObject.getDouble("temp");
+                                double min = mainObject.getDouble("temp_min");
+                                double max = mainObject.getDouble("temp_max");
+                                int humidity = mainObject.getInt("humidity");
+                            }catch (JSONException e){
+                                e.printStackTrace();
+                            }
+                        },
+                        (error) -> {
+                        });
+                queue.add(request);
+
+            } catch (UnsupportedEncodingException e) {
+                throw new RuntimeException();
             }
         });
-
     }
+
 
     /**
      * The method is used to check if a password has an uppercase, a lowercase
