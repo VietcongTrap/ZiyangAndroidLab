@@ -15,16 +15,20 @@ import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.snackbar.Snackbar;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
@@ -58,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         btn.setOnClickListener(clk -> {
             try {
                 cityName = URLEncoder.encode(et.getText().toString(), "UTF-8");
-                String url = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=7e943c97096a9784391a981c4d878b22&units=metric";
+                String url = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=5abd7f98683fe7ce7a0e2b51f20387ec&units=metric";
                 /*
                 {
   "coord": {
@@ -128,15 +132,40 @@ public class MainActivity extends AppCompatActivity {
                                     iconName = thisPosition.getString("icon");
                                     description = thisPosition.getString("description");
                                 }
-                                String imageUrl = "http://openweathermap.org/img/w/" + iconName + ".png";
+                                String imageUrl = "https://openweathermap.org/img/w/" + iconName + ".png";
+                                String finalIconName = iconName;
                                 ImageRequest imgReq = new ImageRequest(imageUrl, bitmap -> {
                                     // Do something with loaded bitmap...
                                     Log.d("image received", "got the image");
+                                    File file = new File();
+                                    if
+                                    FileOutputStream fOut = null;
+                                    try {
+                                        fOut = openFileOutput( finalIconName + ".png", Context.MODE_PRIVATE);
+
+                                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut);
+                                        fOut.flush();
+                                        fOut.close();
+                                    } catch (FileNotFoundException e) {
+                                        e.printStackTrace();
+                                    } catch (IOException e) {
+                                        throw new RuntimeException(e);
+                                    }
                                     binding.weatherImage.setImageBitmap(bitmap);
+                                    else
+
                                 }, 1024, 1024, ImageView.ScaleType.CENTER, null,
-                                        (error ) -> {
-                                            Log.d("error", "image not downloaded");
-                                        });
+                                        new Response.ErrorListener() {
+                                            @Override
+                                            public void onErrorResponse(VolleyError error) {
+                                                // Do something with error response
+                                                error.printStackTrace();
+                                                Log.d("error", error.getMessage());
+                                                }
+                                        })
+
+
+                                        ;
                                 queue.add(imgReq);
                                 JSONObject mainObject = response.getJSONObject( "main" );
                                 int vis = response.getInt("visibility");
