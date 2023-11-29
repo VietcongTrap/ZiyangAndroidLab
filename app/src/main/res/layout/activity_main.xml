@@ -25,15 +25,50 @@
 
     <Button
         android:id="@+id/myButton"
-        android:layout_width="wrap_content"
+        android:layout_width="228dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="144dp"
-        android:text="@string/button_message" />
+        android:text="@string/button_message"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/temp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Temp goes here"
+        android:visibility="invisible" />
+
+    <TextView
+        android:id="@+id/minTemp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Min goes here"
+        android:visibility="invisible"/>
+
+    <TextView
+        android:id="@+id/maxTemp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Max goes here"
+        android:visibility="invisible"/>
+
+    <TextView
+        android:id="@+id/humidity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Humidity goes here"
+        android:visibility="invisible" />
 
     <ImageView
         android:id="@+id/weatherImage"
-        android:layout_width="400dp"
-        android:layout_height="400dp"
-        app:srcCompat="@drawable/app_icon" />
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        app:srcCompat="@drawable/app_icon"
+        android:visibility="invisible"/>
 
+    <TextView
+        android:id="@+id/desc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="description goes here"
+        android:visibility="invisible"/>
 </LinearLayout>

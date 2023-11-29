@@ -2,10 +2,13 @@ package algonquin.cst2355.huan0269.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -63,61 +66,6 @@ public class MainActivity extends AppCompatActivity {
             try {
                 cityName = URLEncoder.encode(et.getText().toString(), "UTF-8");
                 String url = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=5abd7f98683fe7ce7a0e2b51f20387ec&units=metric";
-                /*
-                {
-  "coord": {
-    "lon": -74.006,
-    "lat": 40.7143
-  },
-  "weather": [
-    {
-      "id": 500,
-      "main": "Rain",
-      "description": "light rain",
-      "icon": "10n"
-    },
-    {
-      "id": 701,
-      "main": "Mist",
-      "description": "mist",
-      "icon": "50n"
-    }
-  ],
-  "base": "stations",
-  "main": {
-    "temp": 11.47,
-    "feels_like": 10.97,
-    "temp_min": 9.23,
-    "temp_max": 12.94,
-    "pressure": 1002,
-    "humidity": 88
-  },
-  "visibility": 4828,
-  "wind": {
-    "speed": 14.31,
-    "deg": 117,
-    "gust": 18.78
-  },
-  "rain": {
-    "1h": 0.16
-  },
-  "clouds": {
-    "all": 100
-  },
-  "dt": 1701057672,
-  "sys": {
-    "type": 2,
-    "id": 2008101,
-    "country": "US",
-    "sunrise": 1700999719,
-    "sunset": 1701034295
-  },
-  "timezone": -18000,
-  "id": 5128581,
-  "name": "New York",
-  "cod": 200
-}
-                 */
 
                 JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                         (response) -> {
@@ -125,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
                                 JSONObject coord = response.getJSONObject("coord");
                                 JSONArray weatherArray = response.getJSONArray("weather");
 
-                                String description;
+                                String description = "";
                                 String iconName = "";
                                 for (int i=0; i<weatherArray.length(); i++){
                                     JSONObject thisPosition = weatherArray.getJSONObject(i);
@@ -134,46 +82,63 @@ public class MainActivity extends AppCompatActivity {
                                 }
                                 String imageUrl = "https://openweathermap.org/img/w/" + iconName + ".png";
                                 String finalIconName = iconName;
-                                ImageRequest imgReq = new ImageRequest(imageUrl, bitmap -> {
-                                    // Do something with loaded bitmap...
-                                    Log.d("image received", "got the image");
-                                    File file = new File();
-                                    if
-                                    FileOutputStream fOut = null;
-                                    try {
-                                        fOut = openFileOutput( finalIconName + ".png", Context.MODE_PRIVATE);
+                                Bitmap image = null;
+                                String pathname = getFilesDir()+"/"+iconName+".png";
+                                File file = new File(pathname);
+                                if(file.exists())
+                                {
+                                    image = BitmapFactory.decodeFile(pathname);
+                                    binding.weatherImage.setImageBitmap(image);
+                                } else {
+                                    String finalIconName1 = iconName;
+                                    ImageRequest imgReq = new ImageRequest(imageUrl, new Response.Listener<Bitmap>() {
+                                        @Override
+                                        public void onResponse(Bitmap bitmap) {
+                                            try {
+                                            // Do something with loaded bitmap...
+                                            Log.d("image received","got the image");
+                                                bitmap.compress(Bitmap.CompressFormat.PNG, 100, MainActivity.this.openFileOutput(finalIconName1 +".png", Activity.MODE_PRIVATE));
 
-                                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut);
-                                        fOut.flush();
-                                        fOut.close();
-                                    } catch (FileNotFoundException e) {
-                                        e.printStackTrace();
-                                    } catch (IOException e) {
-                                        throw new RuntimeException(e);
-                                    }
-                                    binding.weatherImage.setImageBitmap(bitmap);
-                                    else
-
-                                }, 1024, 1024, ImageView.ScaleType.CENTER, null,
-                                        new Response.ErrorListener() {
-                                            @Override
-                                            public void onErrorResponse(VolleyError error) {
-                                                // Do something with error response
-                                                error.printStackTrace();
-                                                Log.d("error", error.getMessage());
+                                                binding.weatherImage.setImageBitmap(bitmap);
+                                            } catch (FileNotFoundException e) {
+                                                throw new RuntimeException(e);
+                                            }
+                                        }
+                                    } , 1024, 1024, ImageView.ScaleType.CENTER, null,
+                                            new Response.ErrorListener() {
+                                                @Override
+                                                public void onErrorResponse(VolleyError error) {
+                                                    // Do something with error response
+                                                    error.printStackTrace();
+                                                    Log.d("error", error.getMessage());
                                                 }
-                                        })
-
-
-                                        ;
-                                queue.add(imgReq);
+                                            }
+                                 );
+                                    queue.add(imgReq);
+                                }
                                 JSONObject mainObject = response.getJSONObject( "main" );
                                 int vis = response.getInt("visibility");
                                 String name = response.getString("name");
+
                                 double current = mainObject.getDouble("temp");
                                 double min = mainObject.getDouble("temp_min");
                                 double max = mainObject.getDouble("temp_max");
                                 int humidity = mainObject.getInt("humidity");
+                                String finalDescription = description;
+                                runOnUiThread( (  )  -> {
+                                    binding.weatherImage.setVisibility(View.VISIBLE);
+                                    binding.temp.setText("The current temperature is " + current);
+                                    binding.temp.setVisibility(View.VISIBLE);
+                                    binding.minTemp.setText("The current minimal temperature " + min);
+                                    binding.minTemp.setVisibility(View.VISIBLE);
+                                    binding.maxTemp.setVisibility(View.VISIBLE);
+                                    binding.maxTemp.setText("The current maximum temperature " + max);
+                                    binding.humidity.setText("The current humidity is " + humidity);
+                                    binding.humidity.setVisibility(View.VISIBLE);
+                                    binding.desc.setText(finalDescription);
+                                    binding.desc.setVisibility(View.VISIBLE);
+                                });
+
                             }catch (JSONException e){
                                 e.printStackTrace();
                             }
