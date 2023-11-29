@@ -129,18 +129,14 @@ public class MainActivity extends AppCompatActivity {
                                     description = thisPosition.getString("description");
                                 }
                                 String imageUrl = "http://openweathermap.org/img/w/" + iconName + ".png";
-                                ImageRequest imgReq = new ImageRequest(imageUrl, new Response.Listener<Bitmap>() {
-                                    @Override
-                                    public void onResponse(Bitmap bitmap) {
-                                        // Do something with loaded bitmap...
-                                        Log.d("image received", "got the image");
-                                        binding.weatherImage.setImageBitmap(bitmap);
-                                    }
+                                ImageRequest imgReq = new ImageRequest(imageUrl, bitmap -> {
+                                    // Do something with loaded bitmap...
+                                    Log.d("image received", "got the image");
+                                    binding.weatherImage.setImageBitmap(bitmap);
                                 }, 1024, 1024, ImageView.ScaleType.CENTER, null,
                                         (error ) -> {
                                             Log.d("error", "image not downloaded");
                                         });
-
                                 queue.add(imgReq);
                                 JSONObject mainObject = response.getJSONObject( "main" );
                                 int vis = response.getInt("visibility");
@@ -155,6 +151,7 @@ public class MainActivity extends AppCompatActivity {
                         },
                         (error) -> {
                         });
+
                 queue.add(request);
 
             } catch (UnsupportedEncodingException e) {
